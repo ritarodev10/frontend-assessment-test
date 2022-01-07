@@ -1,7 +1,18 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import styled from 'styled-components';
 import styles from '../styles/Home.module.css';
+
+const MainStyled = styled.main`
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 4rem 0;
+`;
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +23,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <MainStyled>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -45,7 +56,7 @@ const Home: NextPage = () => {
             <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
           </a>
         </div>
-      </main>
+      </MainStyled>
 
       <footer className={styles.footer}>
         <a
