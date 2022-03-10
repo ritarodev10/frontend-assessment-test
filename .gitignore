@@ -38,3 +38,5 @@ yarn-error.log*
 
 cypress/screenshots
 cypress/videos
+
+.env
