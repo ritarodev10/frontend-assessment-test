@@ -24,7 +24,7 @@ const Home: NextPage = () => {
       </Head>
 
       <MainStyled>
-        <h1 className="text-3xl font-bold underline">Tailwind Header</h1>
+        <h1 className="text-3xl font-bold underline">Tailwind Head</h1>
 
         <p className={styles.description} test-id="getting started">
           Get started by editing <code className={styles.code}>pages/index.tsx</code>
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
           </a>
 
           <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
+            <h2 className="text-slate-100">Learn &rarr;</h2>
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
