@@ -2,28 +2,13 @@
 
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Planet } from 'type/planets.type';
 import DashboardLayout from 'components/DashboardLayout';
+import { usePlanetFetch } from 'hooks/usePlanetFetch';
 
 const PlanetDetail: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-
-  const [planet, setPlanet] = React.useState<Planet | null>(null);
-
-  React.useEffect(() => {
-    if (typeof id === 'string') {
-      fetch(`https://swapi.dev/api/planets/${id}/`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => setPlanet(data))
-        .catch((error) => console.error('Error fetching planet details:', error));
-    }
-  }, [id]);
+  const { data: planet, loading, error } = usePlanetFetch(Number(id));
 
   if (!planet) {
     return <div>Loading...</div>;
@@ -59,13 +44,13 @@ const PlanetDetail: React.FC = () => {
         </p>
         <h3>Residents:</h3>
         <ul>
-          {planet.residents.map((resident, index) => (
+          {planet.residents.map((resident: string, index: number) => (
             <li key={index}>{resident}</li>
           ))}
         </ul>
         <h3>Films:</h3>
         <ul>
-          {planet.films.map((film, index) => (
+          {planet.films.map((film: string, index: number) => (
             <li key={index}>{film}</li>
           ))}
         </ul>

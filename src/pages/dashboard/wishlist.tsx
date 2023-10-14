@@ -1,9 +1,29 @@
+import DashboardLayout from 'components/DashboardLayout';
+import { WishlistProvider, useWishlist } from 'hooks/useWishlist';
 import React from 'react';
 
-type Props = {};
+const WishlistPage: React.FC = () => {
+  const { wishlist, removeFromWishlist } = useWishlist();
 
-const wishtlist = (props: Props) => {
-  return <div>wishtlist</div>;
+  const handleDelete = (planetName: string) => {
+    removeFromWishlist(planetName);
+  };
+
+  return (
+    <DashboardLayout>
+      <div>
+        <h2>Wishlist</h2>
+        <ul>
+          {wishlist.map((planet, index) => (
+            <li key={index}>
+              {planet.name}
+              <button onClick={() => handleDelete(planet.name)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </DashboardLayout>
+  );
 };
 
-export default wishtlist;
+export default WishlistPage;

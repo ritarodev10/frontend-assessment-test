@@ -1,4 +1,4 @@
-export type Planet = {
+export type PlanetDataType = {
   name: string;
   rotation_period: string;
   orbital_period: string;
@@ -19,5 +19,5 @@ export type PlanetsApiResponse = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Planet[];
+  results: PlanetDataType[];
 };
