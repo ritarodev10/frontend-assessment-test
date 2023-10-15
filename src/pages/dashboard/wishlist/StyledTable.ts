@@ -1,28 +1,33 @@
 import styled from 'styled-components';
 
+interface ThProps {
+  width?: string;
+}
+
 export const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
 `;
 
-export const Th = styled.th`
-  background-color: #f2f2f2;
-  border: 1px solid #ddd;
+export const Th = styled.th<ThProps>`
+  color: #fbefdf;
+  height: 0px;
   padding: 8px;
   text-align: left;
+  width: ${(props) => props.width};
 `;
 
 export const Td = styled.td`
-  border: 1px solid #ddd;
+  height: 105px;
   padding: 8px;
 `;
 
 export const Tr = styled.tr`
-  &:nth-child(even) {
-    background-color: #f2f2f2;
-  }
+  // &:nth-child(even) {
+  //   background-color: #f2f2f2;
+  // }
 
-  &:hover {
-    background-color: #ddd;
-  }
+  // &:hover {
+  //   background-color: #ddd;
+  // }
 `;

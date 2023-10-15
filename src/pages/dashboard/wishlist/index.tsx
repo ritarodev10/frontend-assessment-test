@@ -5,7 +5,7 @@ import { Table, Td, Th, Tr } from './StyledTable';
 
 const WishlistPage: React.FC = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
-  const [itemsPerPage, setItemPerPage] = useState(2);
+  const [itemsPerPage, setItemPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(wishlist.length / itemsPerPage);
 
@@ -61,51 +61,83 @@ const WishlistPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div>
-        <h2>Wishlist</h2>
-        <Table>
-          <thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Rotation Period</Th>
-              <Th>Orbital Period</Th>
-              <Th>Diameter</Th>
-              <Th>Climate</Th>
-              <Th>Terrain</Th>
-              <Th>Population</Th>
-              <Th>Created</Th>
-              <Th>Action</Th>
-            </Tr>
-          </thead>
-          <tbody>
-            {wishlist
-              .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-              .map((planet, index) => (
-                <Tr key={index}>
-                  <Td>{planet.name}</Td>
-                  <Td>
-                    {planet.rotation_period === 'unknown'
-                      ? 'unknown'
-                      : `${planet.rotation_period} hrs`}
-                  </Td>
-                  <Td>
-                    {planet.orbital_period === 'unknown'
-                      ? 'unknown'
-                      : `${planet.orbital_period} days`}
-                  </Td>
-                  <Td>{planet.diameter} km</Td>
-                  <Td className="capitalize">{planet.climate}</Td>
-                  <Td className="capitalize">{planet.terrain}</Td>
-                  <Td>{formatPopulation(planet.population)}</Td>
-                  <Td>{formatDate(planet.created)}</Td>
-                  <Td>
-                    <button onClick={() => handleDelete(planet.name)}>Delete</button>
-                  </Td>
+      <div className="flex flex-col w-full">
+        <div className="flex-1 flex flex-col">
+          <div className="flex flex-col flex-1 bg-[#fbefdf] rounded-2xl h-full overflow-hidden">
+            <div className="flex-1 flex items-center justify-center p-4 bg-[#fbefdf] relative">
+              <div className="flex flex-1 gap-12 items-center justify-center"></div>
+              <div className="flex flex-col items-center justify-center">
+                <img alt="logo" src="/logo.jpg" className="w-56 z-20" />{' '}
+                {/* Increase z-index here */}
+                <img
+                  alt="terrain"
+                  src="/left-terain.jpg"
+                  className="w-[450px] absolute bottom-0 left-0 z-10"
+                />
+                <img
+                  alt="terrain"
+                  src="/left-terain.jpg"
+                  className="w-[450px] absolute bottom-0 right-0 z-10 transform scale-x-[-1]"
+                />
+              </div>
+              <div className="flex flex-1 gap-12 w-full items-center justify-center"></div>
+            </div>
+          </div>
+          <div className="flex w-full h-[50px] text-[#fbefdf]">TES</div>
+          <div className="flex h-[500px] flex-col flex-1 bg-[#fbefdf] rounded-2xl overflow-hidden">
+            <Table className="h-500px">
+              <thead>
+                <Tr>
+                  <Th width="15%"></Th>
+                  <Th width="12%"></Th>
+                  <Th width="12%"></Th>
+                  <Th width="15%"></Th>
+                  <Th width="25%"></Th>
+                  <Th width="15%"></Th>
+                  <Th></Th>
                 </Tr>
-              ))}
-          </tbody>
-        </Table>
-        <div className="flex justify-between">
+              </thead>
+              <tbody>
+                {wishlist
+                  .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                  .map((planet, index) => (
+                    <Tr key={index}>
+                      <Td>{planet.name}</Td>
+                      <Td>
+                        {planet.rotation_period === 'unknown'
+                          ? 'unknown'
+                          : `${planet.rotation_period} hrs`}
+                      </Td>
+                      <Td>
+                        {planet.orbital_period === 'unknown'
+                          ? 'unknown'
+                          : `${planet.orbital_period} days`}
+                      </Td>
+                      <Td>{planet.diameter} km</Td>
+                      <Td className="capitalize">{planet.terrain}</Td>
+                      <Td>{formatPopulation(planet.population)}</Td>
+                      <Td>
+                        <button onClick={() => handleDelete(planet.name)}>Delete</button>
+                      </Td>
+                    </Tr>
+                  ))}
+              </tbody>
+            </Table>
+            <div className="flex justify-between">
+              {/* <div className="flex gap-4">
+              <span>Item per page</span>
+              {[2, 5, 10].map((item) => {
+                return (
+                  <button key={item} onClick={() => handleItemsPerPageChange(item)}>
+                    {item}
+                  </button>
+                );
+              })}
+            </div> */}
+            </div>
+          </div>
+        </div>
+        <div className="h-10 text-[#fbefdf] flex justify-center items-center text-sm font-semibold">
           <div>
             <button disabled={currentPage === 1} onClick={() => handlePageChange('prev')}>
               Previous
@@ -114,16 +146,6 @@ const WishlistPage: React.FC = () => {
             <button disabled={currentPage === totalPages} onClick={() => handlePageChange('next')}>
               Next
             </button>
-          </div>
-          <div className="flex gap-4">
-            <span>Item per page</span>
-            {[2, 5, 10].map((item) => {
-              return (
-                <button key={item} onClick={() => handleItemsPerPageChange(item)}>
-                  {item}
-                </button>
-              );
-            })}
           </div>
         </div>
       </div>
