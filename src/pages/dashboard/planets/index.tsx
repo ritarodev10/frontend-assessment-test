@@ -1,43 +1,61 @@
 import Link from 'next/link';
-import DashboardLayout from '../../../components/DashboardLayout';
 import styled from 'styled-components';
+import { FixedSizeList as List } from 'react-window';
+import DashboardLayout from '../../../components/DashboardLayout';
 import { usePlanetsList } from 'hooks/usePlanetFetch';
 import { useWishlist } from 'hooks/useWishlist';
 import { PlanetDataType } from 'type/planets.type';
-import useInfiniteScroll from 'hooks/useInfiniteScroll';
+import { CSSProperties } from 'react';
 
 const PlanetsPage = () => {
   const { data, isSuccess, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     usePlanetsList();
   const { addToWishlist } = useWishlist();
-  const loadMoreRef = useInfiniteScroll(fetchNextPage, hasNextPage || false);
   const handleAddToWishlist = (planet: PlanetDataType) => {
     addToWishlist(planet);
   };
 
-  if (data?.pages) {
-    return (
-      <DashboardLayout>
-        <h1>Planets</h1>
-        <ul>
-          {isSuccess &&
-            data.pages.map((page) =>
-              page.results.map((planet: PlanetDataType, index: number) => (
-                <PlanetCard key={index}>
-                  <PlanetName href={`/dashboard/planets/${index + 1}`}>{planet.name}</PlanetName>
-                  <AddButton onClick={() => handleAddToWishlist(planet)}>Add to Wishlist</AddButton>
-                </PlanetCard>
-              ))
-            )}
-        </ul>
-        <div ref={loadMoreRef} className={`${!hasNextPage ? 'hidden' : ''}`}>
-          {isFetchingNextPage && <p>Loading more...</p>}
-        </div>
-      </DashboardLayout>
-    );
-  }
+  const Row = ({ index, style }: { index: number; style: CSSProperties }) => {
+    const planet = data?.pages.reduce<PlanetDataType[]>(
+      (acc, page) => acc.concat(page.results),
+      []
+    )[index];
 
-  return null;
+    return (
+      <PlanetCard className={`row-${index + 1}-isrendered`} key={index} style={style}>
+        <PlanetName href={`/dashboard/planets/${index + 1}`}>{planet?.name}</PlanetName>
+        <AddButton onClick={() => planet && handleAddToWishlist(planet)}>Add to Wishlist</AddButton>
+      </PlanetCard>
+    );
+  };
+
+  return (
+    <DashboardLayout>
+      <h1>Planets</h1>
+      {isLoading && <p>Loading...</p>}
+      {isSuccess && data?.pages && (
+        <>
+          <List
+            height={600}
+            itemCount={data.pages.reduce((acc, page) => acc + page.results.length, 0)}
+            itemSize={80}
+            width="100%"
+            onItemsRendered={({ visibleStopIndex }) => {
+              const totalPlanets = data.pages.reduce((acc, page) => acc + page.results.length, 0);
+              if (visibleStopIndex === totalPlanets - 1 && hasNextPage) {
+                fetchNextPage();
+              }
+            }}
+          >
+            {Row}
+          </List>
+          {!hasNextPage || (isFetchingNextPage && <p>Loading more...</p>)}
+        </>
+      )}
+      {!isLoading && !isSuccess && <p>Error loading planets.</p>}
+      {!hasNextPage && <p>All planets loaded.</p>}
+    </DashboardLayout>
+  );
 };
 
 export default PlanetsPage;
