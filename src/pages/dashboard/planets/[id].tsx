@@ -3,12 +3,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import DashboardLayout from 'components/DashboardLayout';
-import { usePlanetFetch } from 'hooks/usePlanetFetch';
+import { usePlanetDetails } from 'hooks/usePlanetDetails';
 
 const PlanetDetail: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data: planet, loading, error } = usePlanetFetch(Number(id));
+  const { data: planet, loading, error } = usePlanetDetails(Number(id));
 
   if (!planet) {
     return <div>Loading...</div>;
