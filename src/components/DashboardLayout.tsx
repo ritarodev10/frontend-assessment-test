@@ -1,5 +1,3 @@
-// components/DashboardLayout.tsx
-
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -46,7 +44,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <Link href="/dashboard/wishlist" passHref>
           <SidebarLink>Wishlist</SidebarLink>
         </Link>
-        {/* Add other links as necessary */}
       </Sidebar>
       <Content>{children}</Content>
     </Container>

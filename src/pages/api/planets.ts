@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios, { AxiosError } from 'axios';
-import { PlanetsApiResponse, PlanetDataType } from 'type/planets.type'; // Make sure you have both types.
+import { PlanetsApiResponse, PlanetDataType } from 'type/planets.type';
 
 type ApiResponse = PlanetsApiResponse | PlanetDataType | { error: string };
 
@@ -15,7 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     // Otherwise, fetch the list of all planets
     else {
-      const response = await axios.get('https://swapi.dev/api/planets/');
+      const page = req.query.page || 1;
+      const response = await axios.get(`https://swapi.dev/api/planets/?page=${page}`);
       res.status(200).json(response.data);
     }
   } catch (error) {

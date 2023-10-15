@@ -1,5 +1,5 @@
 import DashboardLayout from 'components/DashboardLayout';
-import { WishlistProvider, useWishlist } from 'hooks/useWishlist';
+import { useWishlist } from 'hooks/useWishlist';
 import React from 'react';
 
 const WishlistPage: React.FC = () => {

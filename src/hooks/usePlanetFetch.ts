@@ -1,22 +1,23 @@
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
+import { PlanetsApiResponse } from 'type/planets.type';
 
-const fetchPlanetData = async (planetId?: number) => {
-  const endpoint = planetId ? `/api/planets?id=${planetId}` : '/api/planets';
-  const response = await axios.get(endpoint);
+const getMorePlanets = async ({ pageParam = 1 }): Promise<PlanetsApiResponse> => {
+  const endpoint = `/api/planets/?page=${pageParam}`;
+  const response = await axios.get<PlanetsApiResponse>(endpoint);
   return response.data;
 };
 
-export const usePlanetFetch = (planetId?: number) => {
-  const {
-    data,
-    isLoading: loading,
-    isError,
-    error
-  } = useQuery(['planetData', planetId], () => fetchPlanetData(planetId), {
+export const usePlanetsList = () => {
+  return useInfiniteQuery<PlanetsApiResponse, Error>('planetsList', getMorePlanets, {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.next) {
+        const nextPage = new URL(lastPage.next).searchParams.get('page');
+        return nextPage ? parseInt(nextPage, 10) : undefined;
+      }
+      return undefined;
+    },
     retry: 1,
     refetchOnWindowFocus: false
   });
-
-  return { data, loading, error: isError ? (error as any).message : null };
 };
