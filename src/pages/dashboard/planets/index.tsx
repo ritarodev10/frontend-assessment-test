@@ -53,7 +53,7 @@ const PlanetsPage = () => {
         </>
       )}
       {!isLoading && !isSuccess && <p>Error loading planets.</p>}
-      {!hasNextPage && <p>All planets loaded.</p>}
+      {!hasNextPage && !isLoading && <p>All planets loaded.</p>}
     </DashboardLayout>
   );
 };
