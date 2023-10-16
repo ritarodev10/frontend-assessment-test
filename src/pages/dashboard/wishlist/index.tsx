@@ -2,11 +2,13 @@ import DashboardLayout from 'components/DashboardLayout';
 import { useWishlist } from 'hooks/useWishlist';
 import React, { useState } from 'react';
 import { Table, Td, Th, Tr } from './StyledTable';
+import { RiDeleteBin2Fill } from 'react-icons/ri';
+import { TbPlayerTrackPrevFilled, TbPlayerTrackNextFilled } from 'react-icons/tb';
 
 const WishlistPage: React.FC = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
-  const [itemsPerPage, setItemPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
   const totalPages = Math.ceil(wishlist.length / itemsPerPage);
 
   const handlePageChange = (direction: 'next' | 'prev') => {
@@ -15,11 +17,6 @@ const WishlistPage: React.FC = () => {
       if (direction === 'prev') return Math.max(prev - 1, 1);
       return prev;
     });
-  };
-
-  const handleItemsPerPageChange = (count: number) => {
-    setItemPerPage(count);
-    setCurrentPage(1); // Reset current page to 1 whenever items per page changes
   };
 
   const handleDelete = (planetName: string) => {
@@ -61,39 +58,39 @@ const WishlistPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-full">
         <div className="flex-1 flex flex-col">
-          <div className="flex flex-col flex-1 bg-[#fbefdf] rounded-2xl h-full overflow-hidden">
-            <div className="flex-1 flex items-center justify-center p-4 bg-[#fbefdf] relative">
-              <div className="flex flex-1 gap-12 items-center justify-center"></div>
-              <div className="flex flex-col items-center justify-center">
-                <img alt="logo" src="/logo.jpg" className="w-56 z-20" />{' '}
-                {/* Increase z-index here */}
-                <img
-                  alt="terrain"
-                  src="/left-terain.jpg"
-                  className="w-[450px] absolute bottom-0 left-0 z-10"
-                />
-                <img
-                  alt="terrain"
-                  src="/left-terain.jpg"
-                  className="w-[450px] absolute bottom-0 right-0 z-10 transform scale-x-[-1]"
-                />
-              </div>
-              <div className="flex flex-1 gap-12 w-full items-center justify-center"></div>
-            </div>
+          <div className="flex-1 flex justify-center bg-[#fbefdf] rounded-2xl relative overflow-hidden">
+            <img alt="logo" src="/logo.jpg" className="w-56 z-20" />
+            <img
+              alt="terrain"
+              src="/left-terain.jpg"
+              className="w-[350px] absolute bottom-0 left-0 z-10"
+            />
+            <img
+              alt="terrain"
+              src="/left-terain.jpg"
+              className="w-[350px] absolute bottom-0 right-0 z-10 transform scale-x-[-1]"
+            />
           </div>
-          <div className="flex w-full h-[50px] text-[#fbefdf]">TES</div>
-          <div className="flex h-[500px] flex-col flex-1 bg-[#fbefdf] rounded-2xl overflow-hidden">
-            <Table className="h-500px">
+          <div className="flex w-full h-[50px] text-[#fbefdf] items-center text-sm">
+            <span className="w-[17%] pl-6">Planet Id</span>
+            <span className="w-[12%]">Population</span>
+            <span className="w-[14%]">Rotation Period</span>
+            <span className="w-[14%]">Orbital Period</span>
+            <span className="w-[15%]">Diameter</span>
+            <span className="w-[20%]">Terain</span>
+          </div>
+          <div className="flex h-[500px] flex-col bg-[#fbefdf] rounded-2xl overflow-hidden">
+            <Table>
               <thead>
                 <Tr>
-                  <Th width="15%"></Th>
+                  <Th width="17%"></Th>
                   <Th width="12%"></Th>
-                  <Th width="12%"></Th>
+                  <Th width="14%"></Th>
+                  <Th width="14%"></Th>
                   <Th width="15%"></Th>
-                  <Th width="25%"></Th>
-                  <Th width="15%"></Th>
+                  <Th width="20%"></Th>
                   <Th></Th>
                 </Tr>
               </thead>
@@ -102,7 +99,10 @@ const WishlistPage: React.FC = () => {
                   .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
                   .map((planet, index) => (
                     <Tr key={index}>
-                      <Td>{planet.name}</Td>
+                      <Td>
+                        <span className="pl-4">{planet.name}</span>
+                      </Td>
+                      <Td>{formatPopulation(planet.population)}</Td>
                       <Td>
                         {planet.rotation_period === 'unknown'
                           ? 'unknown'
@@ -115,36 +115,32 @@ const WishlistPage: React.FC = () => {
                       </Td>
                       <Td>{planet.diameter} km</Td>
                       <Td className="capitalize">{planet.terrain}</Td>
-                      <Td>{formatPopulation(planet.population)}</Td>
                       <Td>
-                        <button onClick={() => handleDelete(planet.name)}>Delete</button>
+                        <button onClick={() => handleDelete(planet.name)}>
+                          <RiDeleteBin2Fill className="text-3xl text-[#f36d5e]" />
+                        </button>
                       </Td>
                     </Tr>
                   ))}
               </tbody>
             </Table>
-            <div className="flex justify-between">
-              {/* <div className="flex gap-4">
-              <span>Item per page</span>
-              {[2, 5, 10].map((item) => {
-                return (
-                  <button key={item} onClick={() => handleItemsPerPageChange(item)}>
-                    {item}
-                  </button>
-                );
-              })}
-            </div> */}
-            </div>
           </div>
         </div>
         <div className="h-10 text-[#fbefdf] flex justify-center items-center text-sm font-semibold">
-          <div>
-            <button disabled={currentPage === 1} onClick={() => handlePageChange('prev')}>
+          <div className="flex gap-10">
+            <button
+              className={`${currentPage === 1 ? 'disabled hidden' : ''} flex gap-3`}
+              onClick={() => handlePageChange('prev')}
+            >
+              <TbPlayerTrackPrevFilled className="text-lg" />
               Previous
             </button>
-            {currentPage} / {totalPages}
-            <button disabled={currentPage === totalPages} onClick={() => handlePageChange('next')}>
+            <button
+              className={`${currentPage === totalPages ? 'disabled hidden' : ''} flex gap-3`}
+              onClick={() => handlePageChange('next')}
+            >
               Next
+              <TbPlayerTrackNextFilled className="text-lg" />
             </button>
           </div>
         </div>

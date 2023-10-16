@@ -95,7 +95,7 @@ const PlanetsPage = () => {
           <div className="flex-1 flex items-center justify-center p-4 bg-[#fbefdf] relative">
             <div className="flex flex-1 gap-12 items-center justify-center"></div>
             <div className="flex flex-col items-center justify-center">
-              <img alt="logo" src="/logo.jpg" className="w-56 z-20" /> {/* Increase z-index here */}
+              <img alt="logo" src="/logo.jpg" className="w-56 z-20" />
               {isLoading && <span className="mt-6 text-xl">Loading Planets...</span>}
               <img
                 alt="terrain"

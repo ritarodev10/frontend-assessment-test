@@ -12,13 +12,12 @@ export const Table = styled.table`
 export const Th = styled.th<ThProps>`
   color: #fbefdf;
   height: 0px;
-  padding: 8px;
   text-align: left;
   width: ${(props) => props.width};
 `;
 
 export const Td = styled.td`
-  height: 105px;
+  height: 125px;
   padding: 8px;
 `;
 
