@@ -75,10 +75,10 @@ const WishlistPage: React.FC = () => {
           </div>
           <div className="flex w-full h-[50px] text-[#fbefdf] items-center text-sm">
             <span className="w-[17%] pl-6">Planet Id</span>
-            <span className="w-[12%]">Population</span>
-            <span className="w-[14%]">Rotation Period</span>
-            <span className="w-[14%]">Orbital Period</span>
-            <span className="w-[15%]">Diameter</span>
+            <span className="w-[12%] text-center">Population</span>
+            <span className="w-[14%] text-center">Rotation Period</span>
+            <span className="w-[14%] text-center">Orbital Period</span>
+            <span className="w-[15%] text-center">Diameter</span>
             <span className="w-[20%]">Terain</span>
           </div>
           <div className="flex h-[500px] flex-col bg-[#fbefdf] rounded-2xl overflow-hidden">
@@ -102,18 +102,18 @@ const WishlistPage: React.FC = () => {
                       <Td>
                         <span className="pl-4">{planet.name}</span>
                       </Td>
-                      <Td>{formatPopulation(planet.population)}</Td>
-                      <Td>
+                      <Td className="text-center">{formatPopulation(planet.population)}</Td>
+                      <Td className="text-center">
                         {planet.rotation_period === 'unknown'
                           ? 'unknown'
                           : `${planet.rotation_period} hrs`}
                       </Td>
-                      <Td>
+                      <Td className="text-center">
                         {planet.orbital_period === 'unknown'
                           ? 'unknown'
                           : `${planet.orbital_period} days`}
                       </Td>
-                      <Td>{planet.diameter} km</Td>
+                      <Td className="text-center">{planet.diameter} km</Td>
                       <Td className="capitalize">{planet.terrain}</Td>
                       <Td>
                         <button onClick={() => handleDelete(planet.name)}>

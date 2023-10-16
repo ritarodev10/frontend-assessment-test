@@ -17,6 +17,7 @@ export const Th = styled.th<ThProps>`
 `;
 
 export const Td = styled.td`
+  border-bottom: 1px dashed #1f141c;
   height: 125px;
   padding: 8px;
 `;
